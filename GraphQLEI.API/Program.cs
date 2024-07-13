@@ -1,13 +1,19 @@
 using GraphQL.Server;
 using GraphQLEI.API.Data;
 using GraphQLEI.API.Data.Respositories;
+using GraphQLEI.API.GraphQL;
+using GraphQLEI.API.GraphQL.Mutations;
+using GraphQLEI.API.GraphQL.Queries;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<EmployeeRepository>();  
+builder.Services.AddScoped<EmployeeRepository>();
+builder.Services.AddScoped<EmployeeQuery>();
+builder.Services.AddScoped<EmployeeMutation>();
+builder.Services.AddScoped<AppSchema>();
 // GraphQL
 // register graphQL
 builder.Services.AddGraphQL().AddSystemTextJson();
@@ -29,7 +35,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 //GraphQL
-//app.UseGraphQL<AppSchema>();
+app.UseGraphQL<AppSchema>();
 app.UseGraphQLGraphiQL("/ui/graphql");
 app.UseAuthorization();
 
